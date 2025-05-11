@@ -1,5 +1,7 @@
-from pydantic import BaseModel, EmailStr
 from datetime import datetime
+
+from pydantic import BaseModel
+
 
 class feedbackBase(BaseModel):
     name: str
@@ -7,8 +9,10 @@ class feedbackBase(BaseModel):
     visit_date: str
     feedback: str
 
+
 class FeedbackCreate(feedbackBase):
     pass
+
 
 class Feedback(feedbackBase):
     id: int
@@ -21,6 +25,7 @@ class Feedback(feedbackBase):
     class Config:
         from_attributes = True
 
+
 class CommentFeedbackCreate(BaseModel):
     feedback: str
     sentiment: str
@@ -28,8 +33,10 @@ class CommentFeedbackCreate(BaseModel):
     word_count: int
     adjectives: list[str]
 
+
 class CommentFeedback(CommentFeedbackCreate):
     id: int
     created_at: datetime
+
     class Config:
         from_attributes = True

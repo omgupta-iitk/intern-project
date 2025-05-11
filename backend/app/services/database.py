@@ -1,10 +1,16 @@
 # app/services/database.py
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from supabase import create_client
 
-load_dotenv("/home/om/temp/intern-project/backend/.env")
+# Get the absolute path of the current file (util.py)
+current_file_path = Path(__file__).resolve()
+
+# Navigate up the directory tree to reach the project root
+env_path = current_file_path.parent.parent.parent / ".env"
+load_dotenv(env_path)
 
 
 def get_supabase():

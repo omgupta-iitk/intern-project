@@ -3,15 +3,20 @@ import logging
 import os
 import shutil
 import uuid
-import requests
 from typing import Dict, List
 
+import requests
+from app.analyzers.Bills_analyzer import BillsAnalysis
+from app.analyzers.feedback_analyzer import CommentFeedbackAnalyzer, FeedbackAnalyzer
+from app.analyzers.Revenue_analyzer import RevenueAnalysis
 from app.core.auth import get_current_user
 from app.graphql.schema import schema
-from app.models.feedback import FeedbackCreate, CommentFeedbackCreate
+from app.models.feedback import CommentFeedbackCreate, FeedbackCreate
 from app.models.message import User, UserCreate
 from app.services.database import get_supabase
+from app.services.feedback_enrichment import FeedbackEnrichment
 from app.services.ocr_service import ReceiptOCRService, table_recognizer
+from dotenv import load_dotenv
 from fastapi import (
     Depends,
     FastAPI,
@@ -23,12 +28,6 @@ from fastapi import (
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
-from app.analyzers.Revenue_analyzer import RevenueAnalysis
-from app.analyzers.Bills_analyzer import BillsAnalysis
-from app.services.feedback_enrichment import FeedbackEnrichment
-from app.analyzers.feedback_analyzer import FeedbackAnalyzer, CommentFeedbackAnalyzer
-from dotenv import load_dotenv
-
 load_dotenv("/home/om/temp/intern-project/backend/.env")
 
 INSTAGRAM_MEDIA_ID = os.getenv("INSTAGRAM_MEDIA_ID")
@@ -38,7 +37,7 @@ INSTAGRAM_API_URL = os.getenv("INSTAGRAM_API_URL")
 logger = logging.getLogger("uvicorn.error")
 logger.setLevel(logging.DEBUG)
 
-UPLOAD_DIR = "tmp_uploads"
+UPLOAD_DIR = "temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 app = FastAPI()
 
@@ -121,45 +120,42 @@ async def read_users(
 @app.post("/bill-receipt-enrichment")
 async def bill_receipt_enrichment(
     files: List[UploadFile] = File(...),
-):  
+):
     UPLOAD_DIR = "tmp_uploads"
     os.makedirs(UPLOAD_DIR, exist_ok=True)
-    
+
     all_extracted_data = []
-    
+
     try:
         # Process each file
         for file in files:
             filename = f"{uuid.uuid4().hex}_{file.filename}"
             file_path = os.path.join(UPLOAD_DIR, filename)
-            
+
             # Save file
             with open(file_path, "wb") as buffer:
                 shutil.copyfileobj(file.file, buffer)
-            
+
             # OCR Process
             ocr = ReceiptOCRService(file_path)
             extracted_text = ocr.process()
-            
+
             # Add to collection
             if extracted_text:
                 all_extracted_data.append(extracted_text)
-            
+
             # Clean up
             os.remove(file_path)
         # If no data was extracted successfully
         if not all_extracted_data:
             return {"error": "Could not extract data from any of the provided files"}
-        
+
         # Analyze the collected data
         analyzer = BillsAnalysis(all_extracted_data)
         analysis_results = analyzer.analyze()
-        
-        return {
-            "structured_data": all_extracted_data,
-            "analysis": analysis_results
-        }
-    
+
+        return {"structured_data": all_extracted_data, "analysis": analysis_results}
+
     except Exception as e:
         logger.error(f"Error processing bill receipts: {str(e)}")
         return {"error": f"An error occurred during processing: {str(e)}"}
@@ -167,20 +163,23 @@ async def bill_receipt_enrichment(
 
 @app.post("/feedback-enrichment")
 async def feedback_enrichment(feedbacks: list[FeedbackCreate]):
-
     feedbacksData = []
     for feedback in feedbacks:
         # Validate and clean the feedback
         if not isinstance(feedback, FeedbackCreate):
             raise HTTPException(status_code=400, detail="Invalid feedback format")
-        
+
         # Convert to dictionary and validate
         feedback_data = FeedbackEnrichment(feedback).get_data()
         feedbacksData.append(feedback_data)
-    
+
     analyis = FeedbackAnalyzer(feedbacksData).analyze()
 
-    return {"message": "Feedbacks processed successfully", "data": feedbacksData, "analysis": analyis}
+    return {
+        "message": "Feedbacks processed successfully",
+        "data": feedbacksData,
+        "analysis": analyis,
+    }
 
 
 @app.post("/tabular_record")
@@ -207,23 +206,29 @@ async def tabular_record(file: UploadFile = File(...)):
         "recommendations": recomendations,
     }
 
+
 @app.get("/comment-persist-analyze")
 async def comment_persist_analyze():
-
     supabase = get_supabase()
 
     comments_data = requests.get(
-        "https://graph.instagram.com/"+ INSTAGRAM_MEDIA_ID+"/comments?access_token="+INSTAGRAM_ACCESS_TOKEN
+        "https://graph.instagram.com/"
+        + INSTAGRAM_MEDIA_ID
+        + "/comments?access_token="
+        + INSTAGRAM_ACCESS_TOKEN
     ).json()
 
     comments = []
     for comment in comments_data["data"]:
         comment_id = comment["id"]
         content = requests.get(
-        "https://graph.instagram.com/v22.0/"+ comment_id +"?fields=id,text&access_token="+INSTAGRAM_ACCESS_TOKEN
+            "https://graph.instagram.com/v22.0/"
+            + comment_id
+            + "?fields=id,text&access_token="
+            + INSTAGRAM_ACCESS_TOKEN
         ).json()
         comments.append(content["text"])
-    
+
     feedbacks = []
     for comment in comments:
         feedback = CommentFeedbackCreate(
@@ -239,7 +244,7 @@ async def comment_persist_analyze():
         # Validate and clean the feedback
         if not isinstance(feedback, CommentFeedbackCreate):
             raise HTTPException(status_code=400, detail="Invalid feedback format")
-        
+
         # Convert to dictionary and validate
         feedback_data = FeedbackEnrichment(feedback).get_data()
         feedbacksData.append(feedback_data)
@@ -248,8 +253,8 @@ async def comment_persist_analyze():
     supabase.table("comment").insert(feedbacksData).execute()
 
     analyis = CommentFeedbackAnalyzer(feedbacksData).analyze()
-    return {"message": "Comment Feedbacks processed successfully", "data": feedbacksData, "analysis": analyis}
-    
-
-
-
+    return {
+        "message": "Comment Feedbacks processed successfully",
+        "data": feedbacksData,
+        "analysis": analyis,
+    }

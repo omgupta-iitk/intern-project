@@ -1,4 +1,5 @@
 import traceback
+from pathlib import Path
 from typing import List, Optional
 
 import strawberry
@@ -8,7 +9,12 @@ from strawberry.types import Info
 
 from ..services.database import get_supabase
 
-load_dotenv("/home/om/temp/intern-project/backend/.env")
+# Get the absolute path of the current file (util.py)
+current_file_path = Path(__file__).resolve()
+
+# Navigate up the directory tree to reach the project root
+env_path = current_file_path.parent.parent.parent / ".env"
+load_dotenv(env_path)
 
 
 @strawberry.type

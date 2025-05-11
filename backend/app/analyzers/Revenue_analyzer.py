@@ -3,7 +3,7 @@ from io import BytesIO
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from app.analyzers.util import upload_to_supabase_storage
+from app.util import upload_to_supabase_storage
 
 
 class RevenueAnalysis:

@@ -1,37 +1,16 @@
-import os
 import re
 import uuid
+from pathlib import Path
 
 import cv2
 import pandas as pd
-from app.services.database import get_supabase
-from dotenv import load_dotenv
+from app.util import upload_excel_to_supabase_storage
 from img2table.document import Image
 from img2table.ocr import PaddleOCR
 from paddleocr import PaddleOCR as PaddleOCRV2
 
-load_dotenv("/home/om/temp/intern-project/backend/.env")
-
-BUCKET_NAME = os.getenv("SUPABASE_BUCKET_NAME")
-
-
-def upload_excel_to_supabase_storage(file_path, filename, bucket_name=BUCKET_NAME):
-    try:
-        supabase = get_supabase()  # Assuming this returns your Supabase client
-
-        # Read the file as bytes
-        with open(file_path, "rb") as f:
-            file_bytes = f.read()
-
-        # Upload to Supabase storage
-        supabase.storage.from_(bucket_name).upload(filename, file_bytes)
-
-        # Get public URL
-        public_url = supabase.storage.from_(bucket_name).get_public_url(filename)
-        return public_url
-    except Exception as e:
-        print(f"Error uploading Excel file: {e}")
-        return None
+# Get the absolute path of the current file (util.py)
+current_file_path = Path(__file__).resolve()
 
 
 class ReceiptOCRService:
@@ -115,7 +94,7 @@ def table_recognizer(image_path: str):
     ocr = PaddleOCR(lang="en")
 
     filename = f"{uuid.uuid4().hex}_table-record.xlsx"
-    file_path = f"/home/om/temp/intern-project/backend/tmp_uploads/{filename}"
+    file_path = f"{current_file_path.parent.parent.parent}/temp_uploads/{filename}"
     img.to_xlsx(file_path, ocr=ocr)
     df = pd.read_excel(file_path)
     json_string = df.to_json()

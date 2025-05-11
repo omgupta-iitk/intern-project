@@ -1,13 +1,19 @@
 # app/core/auth.py
 import json
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import jwk, jwt
 
-load_dotenv("/home/om/temp/intern-project/backend/.env")
+# Get the absolute path of the current file (util.py)
+current_file_path = Path(__file__).resolve()
+
+# Navigate up the directory tree to reach the project root
+env_path = current_file_path.parent.parent.parent / ".env"
+load_dotenv(env_path)
 
 clerk_issuer = os.getenv("CLERK_ISSUER")
 clerk_jwks = os.getenv("CLERK_JWKS")

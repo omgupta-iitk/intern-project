@@ -1,23 +1,32 @@
-from fastapi import FastAPI, UploadFile, File, Form, WebSocket, WebSocketDisconnect
-import os
-import uuid
-import shutil
-from app.services.ocr_service import ReceiptOCRService, table_recognizer
-from app.models.message import User, UserCreate
-from app.core.auth import get_current_user
-from app.services.database import get_supabase
-from app.graphql.schema import schema
-from fastapi import HTTPException, Depends
-from strawberry.fastapi import GraphQLRouter
-from fastapi.middleware.cors import CORSMiddleware
-import logging
-from app.models.feedback import Feedback, FeedbackCreate
-from app.services.feedback_service import FeedbackAnalyzer
-from app.services.trend_engagement_analyzer import RevenueAnalysis
 import json
+import logging
+import os
+import shutil
+import uuid
 from typing import Dict
 
-logger = logging.getLogger('uvicorn.error')
+from app.core.auth import get_current_user
+from app.graphql.schema import schema
+from app.models.feedback import FeedbackCreate
+from app.models.message import User, UserCreate
+from app.services.database import get_supabase
+from app.services.ocr_service import ReceiptOCRService, table_recognizer
+from fastapi import (
+    Depends,
+    FastAPI,
+    File,
+    HTTPException,
+    UploadFile,
+    WebSocket,
+    WebSocketDisconnect,
+)
+from fastapi.middleware.cors import CORSMiddleware
+from strawberry.fastapi import GraphQLRouter
+
+from backend.app.analyzers.Revenue_analyzer import RevenueAnalysis
+from backend.app.services.feedback_enrichment import FeedbackAnalyzer
+
+logger = logging.getLogger("uvicorn.error")
 logger.setLevel(logging.DEBUG)
 
 UPLOAD_DIR = "tmp_uploads"
@@ -36,6 +45,7 @@ app.add_middleware(
 graphql_app = GraphQLRouter(schema)
 app.include_router(graphql_app, prefix="/graphql")
 
+
 # WebSocket connection manager
 class ConnectionManager:
     def __init__(self):
@@ -53,7 +63,9 @@ class ConnectionManager:
         if user_id in self.active_connections:
             await self.active_connections[user_id].send_text(json.dumps(message))
 
+
 manager = ConnectionManager()
+
 
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
@@ -66,21 +78,25 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
     except WebSocketDisconnect:
         manager.disconnect(user_id)
 
+
 @app.post("/create-user/", response_model=User)
 async def create_user(user: UserCreate, clerk_id: str = Depends(get_current_user)):
     supabase = get_supabase()
 
     # Check if user already exists
-    existing_user = supabase.table("users").select("*").eq("clerk_id", clerk_id).execute()
+    existing_user = (
+        supabase.table("users").select("*").eq("clerk_id", clerk_id).execute()
+    )
     if existing_user.data:
         raise HTTPException(status_code=400, detail="User already exists")
-    
+
     # Create new user
     user_data = user.model_dump()
     user_data["clerk_id"] = clerk_id
     new_user = supabase.table("users").insert(user_data).execute()
-    
+
     return new_user.data[0]
+
 
 @app.get("/users/me", response_model=User)
 async def read_current_user(clerk_id: str = Depends(get_current_user)):
@@ -90,11 +106,15 @@ async def read_current_user(clerk_id: str = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="User not found")
     return user.data[0]
 
+
 @app.get("/users", response_model=list[User])
-async def read_users(skip: int = 0, limit: int = 10, clerk_id: str = Depends(get_current_user)):
+async def read_users(
+    skip: int = 0, limit: int = 10, clerk_id: str = Depends(get_current_user)
+):
     supabase = get_supabase()
     users = supabase.table("users").select("*").range(skip, skip + limit).execute()
     return users.data
+
 
 @app.post("/extract_text_from_receipt")
 async def extract_text_from_receipt(
@@ -110,13 +130,14 @@ async def extract_text_from_receipt(
         shutil.copyfileobj(file.file, buffer)
 
     # OCR Process
-    ocr = ReceiptOCRService(file_path, tabular_format)
+    ocr = ReceiptOCRService(file_path)
     extracted_text = ocr.process()
 
     # Optionally delete after processing
     os.remove(file_path)
 
     return {"structured_data": extracted_text}
+
 
 @app.post("/feedback")
 async def feedback(feedback: FeedbackCreate):
@@ -148,4 +169,8 @@ async def tabular_record(file: UploadFile = File(...)):
     # Optionally delete after processing
     os.remove(file_path)
 
-    return {"structured_data": data, "analysis": basic_analysis, "recommendations": recomendations}
+    return {
+        "structured_data": data,
+        "analysis": basic_analysis,
+        "recommendations": recomendations,
+    }

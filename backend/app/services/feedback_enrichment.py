@@ -1,6 +1,7 @@
 from textblob import TextBlob
 from app.models.feedback import FeedbackCreate
 
+
 class FeedbackAnalyzer:
     def __init__(self, feedback: FeedbackCreate):
         """Initialize with a single FeedbackCreate object"""
@@ -11,11 +12,11 @@ class FeedbackAnalyzer:
 
     def _validate_and_clean(self, data: dict) -> dict:
         """Ensure 'feedback' field exists and is a string"""
-        data['feedback'] = str(data.get('feedback', '') or '')
+        data["feedback"] = str(data.get("feedback", "") or "")
         return data
 
     def _extract_adjectives(self, text: str):
-        return [word for (word, tag) in TextBlob(text).tags if tag == 'JJ']
+        return [word for (word, tag) in TextBlob(text).tags if tag == "JJ"]
 
     def _analyze_sentiment(self, text: str):
         return TextBlob(text).sentiment.polarity
@@ -29,12 +30,12 @@ class FeedbackAnalyzer:
 
     def _enrich(self):
         """Add enrichment fields to the feedback item"""
-        text = self.data['feedback']
-        self.data['word_count'] = len(text.split())
-        self.data['adjectives'] = self._extract_adjectives(text)
+        text = self.data["feedback"]
         polarity = self._analyze_sentiment(text)
-        self.data['sentiment'] = polarity
-        self.data['sentiment_label'] = self._label_sentiment(polarity)
+        self.data["word_count"] = len(text.split())
+        self.data["adjectives"] = self._extract_adjectives(text)
+        self.data["sentiment"] = polarity
+        self.data["sentiment_label"] = self._label_sentiment(polarity)
 
     def get_data(self) -> dict:
         """Return enriched feedback as a dictionary"""

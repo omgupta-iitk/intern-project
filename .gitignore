@@ -7,4 +7,4 @@
 # Backend
 /backend/.env
 **/__pycache__/
-/backend/tmp_uploads/
+/backend/temp_uploads/

@@ -30,15 +30,6 @@ class MessageType:
     createdAt: str
     isRead: bool
 
-# async def get_user_from_token(info: Info) -> UserType:
-#     """Reusable auth checker for GraphQL"""
-#     clerk_id = info.context["user"]
-#     supabase = get_supabase()
-#     user_data = supabase.table("users").select("*").eq("clerk_id", clerk_id).execute()
-#     if not user_data.data:
-#         raise PermissionError("Not authenticated")
-#     return UserType(**user_data.data[0])
-
 async def get_user_from_token(info: Info) -> Optional[UserType]:
     request = info.context["request"]
     auth_header = request.headers.get("Authorization")

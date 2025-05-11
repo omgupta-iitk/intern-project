@@ -1,0 +1,10 @@
+# Frontend
+/frontend-messaging-app/.env
+/frontend-messaging-app/node_modules/
+/frontend-messaging-app/build/
+/frontend-messaging-app/dist/
+
+# Backend
+/backend/.env
+**/__pycache__/
+/backend/tmp_uploads/

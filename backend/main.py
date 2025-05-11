@@ -3,11 +3,12 @@ import logging
 import os
 import shutil
 import uuid
-from typing import Dict
+import requests
+from typing import Dict, List
 
 from app.core.auth import get_current_user
 from app.graphql.schema import schema
-from app.models.feedback import FeedbackCreate
+from app.models.feedback import FeedbackCreate, CommentFeedbackCreate
 from app.models.message import User, UserCreate
 from app.services.database import get_supabase
 from app.services.ocr_service import ReceiptOCRService, table_recognizer
@@ -18,13 +19,21 @@ from fastapi import (
     HTTPException,
     UploadFile,
     WebSocket,
-    WebSocketDisconnect,
 )
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
-from backend.app.analyzers.Revenue_analyzer import RevenueAnalysis
-from backend.app.services.feedback_enrichment import FeedbackAnalyzer
+from app.analyzers.Revenue_analyzer import RevenueAnalysis
+from app.analyzers.Bills_analyzer import BillsAnalysis
+from app.services.feedback_enrichment import FeedbackEnrichment
+from app.analyzers.feedback_analyzer import FeedbackAnalyzer, CommentFeedbackAnalyzer
+from dotenv import load_dotenv
+
+load_dotenv("/home/om/temp/intern-project/backend/.env")
+
+INSTAGRAM_MEDIA_ID = os.getenv("INSTAGRAM_MEDIA_ID")
+INSTAGRAM_ACCESS_TOKEN = os.getenv("INSTAGRAM_ACCESS_TOKEN")
+INSTAGRAM_API_URL = os.getenv("INSTAGRAM_API_URL")
 
 logger = logging.getLogger("uvicorn.error")
 logger.setLevel(logging.DEBUG)
@@ -70,13 +79,6 @@ manager = ConnectionManager()
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
     await manager.connect(websocket, user_id)
-    try:
-        while True:
-            # Wait for messages from the client
-            data = await websocket.receive_text()
-            # Process the message if needed
-    except WebSocketDisconnect:
-        manager.disconnect(user_id)
 
 
 @app.post("/create-user/", response_model=User)
@@ -116,38 +118,69 @@ async def read_users(
     return users.data
 
 
-@app.post("/extract_text_from_receipt")
-async def extract_text_from_receipt(
-    file: UploadFile = File(...),
-):
+@app.post("/bill-receipt-enrichment")
+async def bill_receipt_enrichment(
+    files: List[UploadFile] = File(...),
+):  
     UPLOAD_DIR = "tmp_uploads"
     os.makedirs(UPLOAD_DIR, exist_ok=True)
-    filename = f"{uuid.uuid4().hex}_{file.filename}"
-    file_path = os.path.join(UPLOAD_DIR, filename)
+    
+    all_extracted_data = []
+    
+    try:
+        # Process each file
+        for file in files:
+            filename = f"{uuid.uuid4().hex}_{file.filename}"
+            file_path = os.path.join(UPLOAD_DIR, filename)
+            
+            # Save file
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            
+            # OCR Process
+            ocr = ReceiptOCRService(file_path)
+            extracted_text = ocr.process()
+            
+            # Add to collection
+            if extracted_text:
+                all_extracted_data.append(extracted_text)
+            
+            # Clean up
+            os.remove(file_path)
+        # If no data was extracted successfully
+        if not all_extracted_data:
+            return {"error": "Could not extract data from any of the provided files"}
+        
+        # Analyze the collected data
+        analyzer = BillsAnalysis(all_extracted_data)
+        analysis_results = analyzer.analyze()
+        
+        return {
+            "structured_data": all_extracted_data,
+            "analysis": analysis_results
+        }
+    
+    except Exception as e:
+        logger.error(f"Error processing bill receipts: {str(e)}")
+        return {"error": f"An error occurred during processing: {str(e)}"}
 
-    # Save file
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
 
-    # OCR Process
-    ocr = ReceiptOCRService(file_path)
-    extracted_text = ocr.process()
+@app.post("/feedback-enrichment")
+async def feedback_enrichment(feedbacks: list[FeedbackCreate]):
 
-    # Optionally delete after processing
-    os.remove(file_path)
+    feedbacksData = []
+    for feedback in feedbacks:
+        # Validate and clean the feedback
+        if not isinstance(feedback, FeedbackCreate):
+            raise HTTPException(status_code=400, detail="Invalid feedback format")
+        
+        # Convert to dictionary and validate
+        feedback_data = FeedbackEnrichment(feedback).get_data()
+        feedbacksData.append(feedback_data)
+    
+    analyis = FeedbackAnalyzer(feedbacksData).analyze()
 
-    return {"structured_data": extracted_text}
-
-
-@app.post("/feedback")
-async def feedback(feedback: FeedbackCreate):
-    supabase = get_supabase()
-
-    feedbackAnalzer = FeedbackAnalyzer(feedback)
-    analysed_feedback = feedbackAnalzer.get_data()
-    supabase.table("feedback").insert(analysed_feedback).execute()
-
-    return {"message": "Feedback processed successfully", "data": analysed_feedback}
+    return {"message": "Feedbacks processed successfully", "data": feedbacksData, "analysis": analyis}
 
 
 @app.post("/tabular_record")
@@ -161,7 +194,6 @@ async def tabular_record(file: UploadFile = File(...)):
 
     # OCR Process
     df, data = table_recognizer(file_path)
-    print(data)
     analyzer = RevenueAnalysis(df)
     basic_analysis = analyzer.analyze()
     recomendations = analyzer.generate_recommendations(basic_analysis)
@@ -174,3 +206,50 @@ async def tabular_record(file: UploadFile = File(...)):
         "analysis": basic_analysis,
         "recommendations": recomendations,
     }
+
+@app.get("/comment-persist-analyze")
+async def comment_persist_analyze():
+
+    supabase = get_supabase()
+
+    comments_data = requests.get(
+        "https://graph.instagram.com/"+ INSTAGRAM_MEDIA_ID+"/comments?access_token="+INSTAGRAM_ACCESS_TOKEN
+    ).json()
+
+    comments = []
+    for comment in comments_data["data"]:
+        comment_id = comment["id"]
+        content = requests.get(
+        "https://graph.instagram.com/v22.0/"+ comment_id +"?fields=id,text&access_token="+INSTAGRAM_ACCESS_TOKEN
+        ).json()
+        comments.append(content["text"])
+    
+    feedbacks = []
+    for comment in comments:
+        feedback = CommentFeedbackCreate(
+            feedback=comment,
+            sentiment="",
+            sentiment_label="",
+            word_count=0,
+            adjectives=[],
+        )
+        feedbacks.append(feedback)
+    feedbacksData = []
+    for feedback in feedbacks:
+        # Validate and clean the feedback
+        if not isinstance(feedback, CommentFeedbackCreate):
+            raise HTTPException(status_code=400, detail="Invalid feedback format")
+        
+        # Convert to dictionary and validate
+        feedback_data = FeedbackEnrichment(feedback).get_data()
+        feedbacksData.append(feedback_data)
+
+    # Data persistence to Supabase database
+    supabase.table("comment").insert(feedbacksData).execute()
+
+    analyis = CommentFeedbackAnalyzer(feedbacksData).analyze()
+    return {"message": "Comment Feedbacks processed successfully", "data": feedbacksData, "analysis": analyis}
+    
+
+
+

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ClerkProvider } from '@clerk/clerk-react';
-import UserInfo from './message-interface';
+import UserInterface from './components/UserInterface';
 import ChatPage from './components/ChatPage';
 import Navigation from './components/Navigation';
 import './App.css';
@@ -19,7 +19,7 @@ function App() {
           <Navigation />
           <main className="main-content">
             <Routes>
-              <Route path="/" element={<UserInfo />} />
+              <Route path="/" element={<UserInterface />} />
               <Route path="/chat" element={<ChatPage />} />
               <Route path="/chat/:userId" element={<ChatPage />} />
             </Routes>

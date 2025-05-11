@@ -8,6 +8,7 @@ from app.services.database import get_supabase
 from dotenv import load_dotenv
 from img2table.document import Image
 from img2table.ocr import PaddleOCR
+from paddleocr import PaddleOCR as PaddleOCRV2
 
 load_dotenv("/home/om/temp/intern-project/backend/.env")
 
@@ -38,14 +39,14 @@ class ReceiptOCRService:
         self.image_path = image_path
         self.raw_text = ""
         self.structured_data = {}
-        self.parsed = {"key_values": {}, "items": [], "meta": [], "csv_url": ""}
+        self.parsed = {"key_values": {}, "items": [], "meta": []}
 
     def run_ocr(self):
         img = cv2.imread(self.image_path, cv2.IMREAD_GRAYSCALE)
         if self.image_path is None:
             raise FileNotFoundError(f"Image not found at {self.image_path}")
 
-        ocr = PaddleOCR(
+        ocr = PaddleOCRV2(
             use_angle_cls=True,
             lang="en",
             use_gpu=False,
@@ -56,7 +57,6 @@ class ReceiptOCRService:
         self.raw_text = "\n".join(
             word_info[1][0] for line in result for word_info in line
         )
-        print(self.raw_text)
         return self.raw_text
 
     def parse_items(self):
@@ -70,7 +70,6 @@ class ReceiptOCRService:
             # Match keyword: value, possibly on next line
             if ":" in line:
                 match = re.split(r"[:]", lines[i], maxsplit=1)
-                print(match)
                 key = match[0].strip()
                 value = match[1].strip()
                 if not value and i + 1 < len(lines):
@@ -83,7 +82,7 @@ class ReceiptOCRService:
                     r"^(\d+)\s*(x\s*)?(.*)", lines[i], re.IGNORECASE
                 )
                 if quantity_match:
-                    amount = int(quantity_match.group(1))
+                    quantity = int(quantity_match.group(1))
                     name = quantity_match.group(3).strip()
                     price = None
                     if i + 1 < len(lines):
@@ -93,7 +92,7 @@ class ReceiptOCRService:
                             i += 1
                     if price:
                         self.parsed["items"].append(
-                            {"amount": amount, "name": name, "price": price}
+                            {"quantity": quantity, "name": name, "price": price}
                         )
                     else:
                         self.parsed["meta"].append(lines[i])

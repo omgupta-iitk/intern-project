@@ -34,7 +34,6 @@ class MessageType:
 async def get_user_from_token(info: Info) -> Optional[UserType]:
     request = info.context["request"]
     auth_header = request.headers.get("Authorization")
-    print(f"Authorization header: {auth_header}")  # Debug what header is received
 
     if not auth_header:
         print("No Authorization header")
@@ -42,10 +41,8 @@ async def get_user_from_token(info: Info) -> Optional[UserType]:
 
     try:
         token = auth_header.split(" ")[1]
-        print(f"Extracted token: {token}")  # Debug the extracted token
 
         clerk_id = await get_current_clerk_id(token)
-        print(f"Retrieved clerk_id: {clerk_id}")  # Debug the clerk_id
 
         if not clerk_id:
             print("Invalid token or clerk_id not found")
@@ -55,7 +52,6 @@ async def get_user_from_token(info: Info) -> Optional[UserType]:
         user_data = (
             supabase.table("users").select("*").eq("clerk_id", clerk_id).execute()
         )
-        print(f"Supabase response: {user_data}")  # Debug the full response
 
         if not user_data.data:
             print(f"No user found for clerk_id: {clerk_id}")

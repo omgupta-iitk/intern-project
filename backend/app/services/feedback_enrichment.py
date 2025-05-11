@@ -1,12 +1,12 @@
 from textblob import TextBlob
-from app.models.feedback import FeedbackCreate
+from app.models.feedback import FeedbackCreate, CommentFeedbackCreate
 
 
-class FeedbackAnalyzer:
-    def __init__(self, feedback: FeedbackCreate):
+class FeedbackEnrichment:
+    def __init__(self, feedback: FeedbackCreate | CommentFeedbackCreate):
         """Initialize with a single FeedbackCreate object"""
-        if not isinstance(feedback, FeedbackCreate):
-            raise ValueError("Input must be a FeedbackCreate object")
+        if not isinstance(feedback, FeedbackCreate | CommentFeedbackCreate):
+            raise ValueError("Input must be a FeedbackCreate or CommentFeedbackCreate object")
         # Convert to dictionary and validate
         self.data = self._validate_and_clean(feedback.model_dump())
 

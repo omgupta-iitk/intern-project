@@ -20,3 +20,16 @@ class Feedback(feedbackBase):
 
     class Config:
         from_attributes = True
+
+class CommentFeedbackCreate(BaseModel):
+    feedback: str
+    sentiment: str
+    sentiment_label: str
+    word_count: int
+    adjectives: list[str]
+
+class CommentFeedback(CommentFeedbackCreate):
+    id: int
+    created_at: datetime
+    class Config:
+        from_attributes = True

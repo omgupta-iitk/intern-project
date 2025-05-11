@@ -1,7 +1,7 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles/UserInfo.css";
+import "../styles/UserInterface.css";
 
 interface UserData {
   id: string;

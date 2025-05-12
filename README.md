@@ -54,6 +54,13 @@ Note: The frontend makes a GET request to the backend just after launching, so m
 
 1. First setup the backend and start the server.
 
-2. Here's the postman collection([link]()) to test it.
+2. Here's the postman collection([link](https://.postman.co/workspace/My-Workspace~4e715cb7-d077-481f-8dd2-0aa65e7686de/collection/37306826-ddb8fe8f-48f7-46f5-8ed9-92594578706c?action=share&creator=37306826&active-environment=37306826-edc5e1b0-7b50-471b-b1bb-3884fc4a3b76)) to test it.
 
 Note: If face any problem and the backend crashes due to network issues, then restart the backend server and try again to inference.
+
+### Working demo video of messaging-app:
+
+
+https://github.com/user-attachments/assets/ca740c69-22c6-4369-a168-bd327527db04
+
+

@@ -1,6 +1,6 @@
 ## Intern-Project
 ---
-Here's how to inference API endpoints and run the messaging app:
+#### Here's how to run the messaging app and test it! :
 
 Firstly, clone this repo:
 ```
@@ -49,3 +49,11 @@ npm run dev
 ```
 
 Note: The frontend makes a GET request to the backend just after launching, so make sure to start the backend first, then Frontend. Or Restart the frontend if any errors encountered at the launch.
+
+#### Here's how to inference data-analysis API endpoints:
+
+1. First setup the backend and start the server.
+
+2. Here's the postman collection([link]()) to test it.
+
+Note: If face any problem and the backend crashes due to network issues, then restart the backend server and try again to inference.

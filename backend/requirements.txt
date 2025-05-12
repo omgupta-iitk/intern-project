@@ -1,0 +1,17 @@
+requests
+pandas
+matplotlib
+dotenv
+supabase
+fastapi
+python-jose
+strawberry-graphql
+pydantic[email]
+textblob
+opencv-contrib-python
+img2table
+paddlepaddle
+paddleocr
+python-multipart
+uvicorn
+openpyxl

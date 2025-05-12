@@ -23,7 +23,7 @@ conda activate myenv
 ```
 cd backend/
 pip install -r requirements.txt
-
+python -m textblob.download_corpora
 ```
 
 3. Rename the `backend/.env_example` to `backend/.env` and fill in the credentials there.

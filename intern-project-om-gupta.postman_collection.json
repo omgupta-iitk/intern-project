@@ -1,0 +1,259 @@
+{
+	"info": {
+		"_postman_id": "ddb8fe8f-48f7-46f5-8ed9-92594578706c",
+		"name": "intern-project-om-gupta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37306826"
+	},
+	"item": [
+		{
+			"name": "instagram-comments(not-for-testing))",
+			"item": [
+				{
+					"name": "fetch-media_id's",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.instagram.com/{{user_id}}/media?fields=id,media_url,permalink&access_token={{token}}",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"instagram",
+								"com"
+							],
+							"path": [
+								"{{user_id}}",
+								"media"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,media_url,permalink"
+								},
+								{
+									"key": "access_token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch-comments-ids",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.instagram.com/{{media_id}}/comments?access_token={{token}}",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"instagram",
+								"com"
+							],
+							"path": [
+								"{{media_id}}",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch-user-id",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.instagram.com/me?access_token={{token}}",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"instagram",
+								"com"
+							],
+							"path": [
+								"me"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetch-comment-text",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://graph.instagram.com/v22.0/{{media_id}}?fields=id,text&access_token={{token}}",
+							"protocol": "https",
+							"host": [
+								"graph",
+								"instagram",
+								"com"
+							],
+							"path": [
+								"v22.0",
+								"{{media_id}}"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "id,text"
+								},
+								{
+									"key": "access_token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tabular-record-analysis",
+			"item": [
+				{
+					"name": "tabular_record_analysis",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/omgup/OneDrive - IIT Kanpur/Pictures/Screenshots/Screenshot 2025-05-08 130353.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/tabular_record",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"tabular_record"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "feedback-analysis",
+			"item": [
+				{
+					"name": "feedback-analysis",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"name\": \"Jasmine Williams\",\r\n\"rating\": 4,\r\n\"visit_date\": \"April 12, 2025\",\r\n\"feedback\":\"Great selection of teas and pastries! I'm gluten-intolerant and they had several delicious options for me. The chai latte was perfectly spiced. Only taking off one star because the seating area was a bit cramped and noisy. Would definitely come back, but maybe during off-peak hours. The staff was very knowledgeable about ingredients when I asked about allergens.\"},\r\n\r\n{\"name\": \"Thomas Chen\",\r\n\"rating\": 2,\r\n\"visit_date\": \"April 8, 2025\",\r\n\"feedback\":\"Waited nearly 20 minutes for a simple cold brew and muffin during what didn't even seem like a busy time (Tuesday morning). The coffee was good when I finally got it, but the muffin was stale. I noticed other customers who came in after me got served first. Not sure if it was poor organization or favoritism, but I was late to my meeting because of the wait. Disappointing experience.\"},\r\n\r\n{\"name\": \"Sofia Patel\",\r\n\"rating\": 5,\r\n\"visit_date\": \"April 19, 2025\",\r\n\"feedback\":\"Bean & Brew's new quinoa bowl is AMAZING! So fresh and filling - perfect for a healthy lunch. I've been coming here for years and they keep innovating their menu while keeping the classics. WiFi is fast and reliable, making this my favorite remote work spot. Chris at the counter is always cheerful and makes great recommendations. Love the sustainable packaging too!\"},\r\n{\"name\": \"David Kim\",\r\n\"rating\": 2,\r\n\"visit_date\": \"April 30, 2025\",\r\n\"feedback\":\"Disappointed with my evening visit. The 'Evening Special' was not worth the $15.95 price tag. The soup was lukewarm and bland, the sandwich had barely any filling, and the dessert portion was tiny. Place was understaffed with only one server handling all tables, resulting in long waits. Coffee was good as always, but not enough to make up for the rest of the experience. They really need to improve their evening service if they want to be taken seriously as more than just a coffee shop.\"}\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/feedback-enrichment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"feedback-enrichment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bill-analysis",
+			"item": [
+				{
+					"name": "bill-reciept-analysis",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/C:/Users/omgup/OneDrive - IIT Kanpur/Pictures/Screenshots/Screenshot 2025-05-08 013620.png",
+										"/C:/Users/omgup/OneDrive - IIT Kanpur/Pictures/Screenshots/Screenshot 2025-05-08 130213.png"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/bill-receipt-enrichment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"bill-receipt-enrichment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "instagram-comment-analysis",
+			"item": [
+				{
+					"name": "Instagram-comments-analyze",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

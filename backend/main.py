@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import uuid
+from pathlib import Path
 from typing import Dict, List
 
 import requests
@@ -28,7 +29,12 @@ from fastapi import (
 from fastapi.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
-load_dotenv("/home/om/temp/intern-project/backend/.env")
+# Get the absolute path of the current file (util.py)
+current_file_path = Path(__file__).resolve()
+
+# Navigate up the directory tree to reach the project root
+env_path = current_file_path / ".env"
+load_dotenv(env_path)
 
 INSTAGRAM_MEDIA_ID = os.getenv("INSTAGRAM_MEDIA_ID")
 INSTAGRAM_ACCESS_TOKEN = os.getenv("INSTAGRAM_ACCESS_TOKEN")
@@ -37,7 +43,7 @@ INSTAGRAM_API_URL = os.getenv("INSTAGRAM_API_URL")
 logger = logging.getLogger("uvicorn.error")
 logger.setLevel(logging.DEBUG)
 
-UPLOAD_DIR = "temp_uploads"
+UPLOAD_DIR = f"{current_file_path}/temp_uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 app = FastAPI()
 
@@ -83,7 +89,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
             # Wait for messages from the client
             data = await websocket.receive_text()
             # Process the message if needed
-    except WebSocketDisconnect:
+    except:
         manager.disconnect(user_id)
 
 

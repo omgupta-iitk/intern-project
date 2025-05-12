@@ -168,7 +168,59 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "tabular_record_analysis",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/omgup/OneDrive - IIT Kanpur/Pictures/Screenshots/Screenshot 2025-05-08 130353.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/tabular_record",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"tabular_record"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Mon, 12 May 2025 04:04:24 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "3160"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"structured_data\": {\n        \"structured_data\": \"{\\\"Date\\\":{\\\"0\\\":\\\"2025-04-01\\\",\\\"1\\\":\\\"2025-04-02\\\",\\\"2\\\":\\\"2025-04-03\\\",\\\"3\\\":\\\"2025-04-04\\\",\\\"4\\\":\\\"2025-04-05\\\",\\\"5\\\":\\\"2025-04-06\\\",\\\"6\\\":\\\"2025-04-07\\\",\\\"7\\\":\\\"2025-04-08\\\",\\\"8\\\":\\\"2025-04-09\\\",\\\"9\\\":\\\"2025-04-10\\\",\\\"10\\\":\\\"2025-04-11\\\",\\\"11\\\":\\\"2025-04-12\\\",\\\"12\\\":\\\"2025-04-13\\\",\\\"13\\\":\\\"2025-04-14\\\",\\\"14\\\":\\\"2025-04-15\\\",\\\"15\\\":\\\"2025-04-16\\\",\\\"16\\\":\\\"2025-04-17\\\",\\\"17\\\":\\\"2025-04-18\\\",\\\"18\\\":\\\"2025-04-19\\\",\\\"19\\\":\\\"2025-04-20\\\",\\\"20\\\":\\\"2025-04-21\\\",\\\"21\\\":\\\"2025-04-22\\\",\\\"22\\\":\\\"2025-04-23\\\",\\\"23\\\":\\\"2025-04-24\\\",\\\"24\\\":\\\"2025-04-25\\\",\\\"25\\\":\\\"2025-04-26\\\",\\\"26\\\":\\\"2025-04-27\\\",\\\"27\\\":\\\"2025-04-28\\\",\\\"28\\\":\\\"2025-04-29\\\",\\\"29\\\":\\\"2025-04-30\\\"},\\\"Day of Week\\\":{\\\"0\\\":\\\"Tuesday\\\",\\\"1\\\":\\\"Wednesday\\\",\\\"2\\\":\\\"Thursday\\\",\\\"3\\\":\\\"Friday\\\",\\\"4\\\":\\\"Saturday\\\",\\\"5\\\":\\\"Sunday\\\",\\\"6\\\":\\\"Monday\\\",\\\"7\\\":\\\"Tuesday\\\",\\\"8\\\":\\\"Wednesday\\\",\\\"9\\\":\\\"Thursday\\\",\\\"10\\\":\\\"Friday\\\",\\\"11\\\":\\\"Saturday\\\",\\\"12\\\":\\\"Sunday\\\",\\\"13\\\":\\\"Monday\\\",\\\"14\\\":\\\"Tuesday\\\",\\\"15\\\":\\\"Wednesday\\\",\\\"16\\\":\\\"Thursday\\\",\\\"17\\\":\\\"Friday\\\",\\\"18\\\":\\\"Saturday\\\",\\\"19\\\":\\\"Sunday\\\",\\\"20\\\":\\\"Monday\\\",\\\"21\\\":\\\"Tuesday\\\",\\\"22\\\":\\\"Wednesday\\\",\\\"23\\\":\\\"Thursday\\\",\\\"24\\\":\\\"Friday\\\",\\\"25\\\":\\\"Saturday\\\",\\\"26\\\":\\\"Sunday\\\",\\\"27\\\":\\\"Monday\\\",\\\"28\\\":\\\"Tuesday\\\",\\\"29\\\":\\\"Wednesday\\\"},\\\"Total Revenue\\\":{\\\"0\\\":\\\"$1,247.65\\\",\\\"1\\\":\\\"$1,312.80\\\",\\\"2\\\":\\\"$1,389.25\\\",\\\"3\\\":\\\"$1,456.70\\\",\\\"4\\\":\\\"$2,103.45\\\",\\\"5\\\":\\\"$1,875.30\\\",\\\"6\\\":\\\"$1,195.40\\\",\\\"7\\\":\\\"$1,256.85\\\",\\\"8\\\":\\\"$1,303.55\\\",\\\"9\\\":\\\"$1,378.90\\\",\\\"10\\\":\\\"$1,467.25\\\",\\\"11\\\":\\\"$2,235.10\\\",\\\"12\\\":\\\"$1,923.75\\\",\\\"13\\\":\\\"$1,178.90\\\",\\\"14\\\":\\\"$952.35\\\",\\\"15\\\":\\\"$1,289.70\\\",\\\"16\\\":\\\"$1,392.55\\\",\\\"17\\\":\\\"$1,352.15\\\",\\\"18\\\":\\\"$2,056.80\\\",\\\"19\\\":\\\"$1,835.95\\\",\\\"20\\\":\\\"$1,267.80\\\",\\\"21\\\":\\\"$1,351.05\\\",\\\"22\\\":\\\"$1,307.25\\\",\\\"23\\\":\\\"$1,395.60\\\",\\\"24\\\":\\\"$1,487.30\\\",\\\"25\\\":\\\"$2,312.40\\\",\\\"26\\\":\\\"$1,941.85\\\",\\\"27\\\":\\\"$1,215.60\\\",\\\"28\\\":\\\"$1,265.90\\\",\\\"29\\\":\\\"$1,542.35\\\"},\\\"Transaction Count\\\":{\\\"0\\\":143,\\\"1\\\":151,\\\"2\\\":159,\\\"3\\\":172,\\\"4\\\":206,\\\"5\\\":187,\\\"6\\\":138,\\\"7\\\":145,\\\"8\\\":152,\\\"9\\\":160,\\\"10\\\":173,\\\"11\\\":211,\\\"12\\\":190,\\\"13\\\":135,\\\"14\\\":110,\\\"15\\\":148,\\\"16\\\":161,\\\"17\\\":157,\\\"18\\\":201,\\\"19\\\":183,\\\"20\\\":146,\\\"21\\\":155,\\\"22\\\":151,\\\"23\\\":161,\\\"24\\\":175,\\\"25\\\":218,\\\"26\\\":191,\\\"27\\\":140,\\\"28\\\":146,\\\"29\\\":176}}\",\n        \"excel_public_url\": \"https://wjidwijftszidvtxiqvv.supabase.co/storage/v1/object/public/test/76efce868d364ebfb8dfcbbfc478f17c_table-record.xlsx?\"\n    },\n    \"analysis\": {\n        \"trends\": {\n            \"daily_revenue_trend_image\": \"https://wjidwijftszidvtxiqvv.supabase.co/storage/v1/object/public/test/daily_trend_6d7a0792-2a55-4fe2-9bbe-2a9ffdf55d46.png?\",\n            \"weekly_average_revenue\": {\n                \"Friday\": 1440.85,\n                \"Monday\": 1214.425,\n                \"Saturday\": 2176.9375,\n                \"Sunday\": 1894.2125,\n                \"Thursday\": 1389.075,\n                \"Tuesday\": 1214.76,\n                \"Wednesday\": 1351.1299999999999\n            },\n            \"top_revenue_days\": [\n                {\n                    \"Date\": \"2025-04-26\",\n                    \"Total Revenue\": 2312.4\n                },\n                {\n                    \"Date\": \"2025-04-12\",\n                    \"Total Revenue\": 2235.1\n                },\n                {\n                    \"Date\": \"2025-04-05\",\n                    \"Total Revenue\": 2103.45\n                }\n            ]\n        },\n        \"engagement_metrics\": {\n            \"average_spend_per_transaction\": 9.077839672946604\n        }\n    },\n    \"recommendations\": [\n        \"Consider offering discounts or promotions on Mondays to increase traffic.\",\n        \"Optimize staffing on peak days like 2025-04-26 due to high revenue.\"\n    ]\n}"
+						}
+					]
 				}
 			]
 		},
@@ -201,7 +253,58 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "feedback-analysis",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[{\"name\": \"Jasmine Williams\",\r\n\"rating\": 4,\r\n\"visit_date\": \"April 12, 2025\",\r\n\"feedback\":\"Great selection of teas and pastries! I'm gluten-intolerant and they had several delicious options for me. The chai latte was perfectly spiced. Only taking off one star because the seating area was a bit cramped and noisy. Would definitely come back, but maybe during off-peak hours. The staff was very knowledgeable about ingredients when I asked about allergens.\"},\r\n\r\n{\"name\": \"Thomas Chen\",\r\n\"rating\": 2,\r\n\"visit_date\": \"April 8, 2025\",\r\n\"feedback\":\"Waited nearly 20 minutes for a simple cold brew and muffin during what didn't even seem like a busy time (Tuesday morning). The coffee was good when I finally got it, but the muffin was stale. I noticed other customers who came in after me got served first. Not sure if it was poor organization or favoritism, but I was late to my meeting because of the wait. Disappointing experience.\"},\r\n\r\n{\"name\": \"Sofia Patel\",\r\n\"rating\": 5,\r\n\"visit_date\": \"April 19, 2025\",\r\n\"feedback\":\"Bean & Brew's new quinoa bowl is AMAZING! So fresh and filling - perfect for a healthy lunch. I've been coming here for years and they keep innovating their menu while keeping the classics. WiFi is fast and reliable, making this my favorite remote work spot. Chris at the counter is always cheerful and makes great recommendations. Love the sustainable packaging too!\"},\r\n{\"name\": \"David Kim\",\r\n\"rating\": 2,\r\n\"visit_date\": \"April 30, 2025\",\r\n\"feedback\":\"Disappointed with my evening visit. The 'Evening Special' was not worth the $15.95 price tag. The soup was lukewarm and bland, the sandwich had barely any filling, and the dessert portion was tiny. Place was understaffed with only one server handling all tables, resulting in long waits. Coffee was good as always, but not enough to make up for the rest of the experience. They really need to improve their evening service if they want to be taken seriously as more than just a coffee shop.\"}\r\n]\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8000/feedback-enrichment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"feedback-enrichment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Mon, 12 May 2025 04:42:38 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "3230"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Feedbacks processed successfully\",\n    \"data\": [\n        {\n            \"name\": \"Jasmine Williams\",\n            \"rating\": 4,\n            \"visit_date\": \"April 12, 2025\",\n            \"feedback\": \"Great selection of teas and pastries! I'm gluten-intolerant and they had several delicious options for me. The chai latte was perfectly spiced. Only taking off one star because the seating area was a bit cramped and noisy. Would definitely come back, but maybe during off-peak hours. The staff was very knowledgeable about ingredients when I asked about allergens.\",\n            \"word_count\": 58,\n            \"adjectives\": [\n                \"gluten-intolerant\",\n                \"several\",\n                \"delicious\",\n                \"seating\",\n                \"cramped\",\n                \"noisy\",\n                \"off-peak\",\n                \"knowledgeable\"\n            ],\n            \"sentiment\": 0.4,\n            \"sentiment_label\": \"positive\"\n        },\n        {\n            \"name\": \"Thomas Chen\",\n            \"rating\": 2,\n            \"visit_date\": \"April 8, 2025\",\n            \"feedback\": \"Waited nearly 20 minutes for a simple cold brew and muffin during what didn't even seem like a busy time (Tuesday morning). The coffee was good when I finally got it, but the muffin was stale. I noticed other customers who came in after me got served first. Not sure if it was poor organization or favoritism, but I was late to my meeting because of the wait. Disappointing experience.\",\n            \"word_count\": 70,\n            \"adjectives\": [\n                \"simple\",\n                \"busy\",\n                \"good\",\n                \"stale\",\n                \"other\",\n                \"sure\",\n                \"poor\",\n                \"Disappointing\"\n            ],\n            \"sentiment\": -0.125,\n            \"sentiment_label\": \"negative\"\n        },\n        {\n            \"name\": \"Sofia Patel\",\n            \"rating\": 5,\n            \"visit_date\": \"April 19, 2025\",\n            \"feedback\": \"Bean & Brew's new quinoa bowl is AMAZING! So fresh and filling - perfect for a healthy lunch. I've been coming here for years and they keep innovating their menu while keeping the classics. WiFi is fast and reliable, making this my favorite remote work spot. Chris at the counter is always cheerful and makes great recommendations. Love the sustainable packaging too!\",\n            \"word_count\": 62,\n            \"adjectives\": [\n                \"new\",\n                \"AMAZING\",\n                \"fresh\",\n                \"healthy\",\n                \"fast\",\n                \"reliable\",\n                \"favorite\",\n                \"remote\",\n                \"cheerful\",\n                \"great\",\n                \"sustainable\"\n            ],\n            \"sentiment\": 0.4646694214876033,\n            \"sentiment_label\": \"positive\"\n        },\n        {\n            \"name\": \"David Kim\",\n            \"rating\": 2,\n            \"visit_date\": \"April 30, 2025\",\n            \"feedback\": \"Disappointed with my evening visit. The 'Evening Special' was not worth the $15.95 price tag. The soup was lukewarm and bland, the sandwich had barely any filling, and the dessert portion was tiny. Place was understaffed with only one server handling all tables, resulting in long waits. Coffee was good as always, but not enough to make up for the rest of the experience. They really need to improve their evening service if they want to be taken seriously as more than just a coffee shop.\",\n            \"word_count\": 86,\n            \"adjectives\": [\n                \"worth\",\n                \"lukewarm\",\n                \"dessert\",\n                \"tiny\",\n                \"long\",\n                \"good\"\n            ],\n            \"sentiment\": 0.057539682539682536,\n            \"sentiment_label\": \"neutral\"\n        }\n    ],\n    \"analysis\": {\n        \"total_feedbacks\": 4,\n        \"average_rating\": 3.25,\n        \"average_sentiment\": 0.1993022760068215,\n        \"average_word_count\": 69,\n        \"rating_distribution\": {\n            \"1\": 0,\n            \"2\": 2,\n            \"3\": 0,\n            \"4\": 1,\n            \"5\": 1\n        },\n        \"sentiment_distribution\": {\n            \"positive\": 2,\n            \"neutral\": 1,\n            \"negative\": 1\n        },\n        \"top_adjectives\": {\n            \"good\": 2,\n            \"gluten-intolerant\": 1,\n            \"several\": 1,\n            \"delicious\": 1,\n            \"seating\": 1\n        },\n        \"chart_urls\": [\n            \"https://wjidwijftszidvtxiqvv.supabase.co/storage/v1/object/public/test/daily_trend_bbdb25cb-647e-406e-977b-13c00f146d8d.png?\",\n            \"https://wjidwijftszidvtxiqvv.supabase.co/storage/v1/object/public/test/daily_trend_affcec7f-80cc-47bb-a615-ebd5f46f61a3.png?\"\n        ]\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -238,7 +341,62 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "bill-reciept-analysis",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"/C:/Users/omgup/OneDrive - IIT Kanpur/Pictures/Screenshots/Screenshot 2025-05-08 130213.png",
+												"/C:/Users/omgup/OneDrive - IIT Kanpur/Pictures/Screenshots/Screenshot 2025-05-08 013620.png"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/bill-receipt-enrichment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"bill-receipt-enrichment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Mon, 12 May 2025 04:36:03 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "1646"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"structured_data\": [\n        {\n            \"key_values\": {\n                \"RECEIPT#\": \"6734\",\n                \"DATE\": \"30/04/2025\",\n                \"TIME\": \"11:42AM\",\n                \"SERVER\": \"Sarah\",\n                \"TABLE\": \"7\",\n                \"GUESTS\": \"4\",\n                \"SUBTOTAL\": \"$79.50\",\n                \"TOTAL\": \"$100.57\",\n                \"PAYMENT METHOD\": \"Cash\",\n                \"AMOUNT TENDERED\": \"$120.00\",\n                \"CHANGE\": \"$19.43\"\n            },\n            \"items\": [\n                {\n                    \"quantity\": 2,\n                    \"name\": \"Latte\",\n                    \"price\": \"$11.00\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Cold Brew\",\n                    \"price\": \"$5.75\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Chai Tea\",\n                    \"price\": \"$4.50\"\n                },\n                {\n                    \"quantity\": 2,\n                    \"name\": \"Chicken Sandwich\",\n                    \"price\": \"$25.90\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Veggie Wrap\",\n                    \"price\": \"$11.50\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Caesar Salad\",\n                    \"price\": \"$12.95\"\n                },\n                {\n                    \"quantity\": 2,\n                    \"name\": \"Chocolate Muffin\",\n                    \"price\": \"$7.90\"\n                }\n            ],\n            \"meta\": [\n                \"Bill #2\",\n                \"BEAN & BREW COFFEE SHOP\",\n                \"123 Main Street, San Francisco\",\n                \"Tel(415)555-0123\",\n                \"TAX8.5%\",\n                \"$6.76\",\n                \"SERVICE CHARGE18%)$14.31\",\n                \"Thank you for visiting!\",\n                \"COME AGAIN SOON\"\n            ]\n        },\n        {\n            \"key_values\": {\n                \"DATE\": \"30/04/2025\",\n                \"TIME\": \"08:37AM\",\n                \"SERVER\": \"Miguel\",\n                \"TABLE\": \"4\",\n                \"GUESTS\": \"2\",\n                \"SUBTOTAL\": \"$28.45\",\n                \"TOTAL\": \"$35.99\",\n                \"PAYMENT METHOD\": \"Credit Card\",\n                \"TIP\": \"$7.00\",\n                \"TOTAL PAID\": \"$42.99\"\n            },\n            \"items\": [\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Cappuccino\",\n                    \"price\": \"$5.50\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Americano\",\n                    \"price\": \"$4.25\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Avocado Toast\",\n                    \"price\": \"$9.95\"\n                },\n                {\n                    \"quantity\": 1,\n                    \"name\": \"Granola Bowl\",\n                    \"price\": \"$8.75\"\n                }\n            ],\n            \"meta\": [\n                \"BEAN & BREW COFFEE SHOP\",\n                \"123 Main Street, San Francisco\",\n                \"Tel415555-0123\",\n                \"RECEIPT#6721\",\n                \"TAX8.5%\",\n                \"$2.42\",\n                \"SERVICE CHARGE(18%)\",\n                \"$5.12\",\n                \"CARD TYPEVISA ****1234\",\n                \"Thank you for visiting!.\",\n                \"COME AGAIN SOON\"\n            ]\n        }\n    ],\n    \"analysis\": {\n        \"bill_metrics\": {\n            \"total_bills\": 2,\n            \"total_revenue\": 136.56,\n            \"total_guests\": 6,\n            \"average_bill_amount\": 68.28\n        },\n        \"engagement_metrics\": {\n            \"average_guests_per_bill\": 3,\n            \"average_spend_per_guest\": 21.56875\n        }\n    }\n}"
+						}
+					]
 				}
 			]
 		},
@@ -251,7 +409,49 @@
 						"method": "GET",
 						"header": []
 					},
-					"response": []
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/comment-persist-analyze",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"comment-persist-analyze"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "date",
+									"value": "Mon, 12 May 2025 04:50:50 GMT"
+								},
+								{
+									"key": "server",
+									"value": "uvicorn"
+								},
+								{
+									"key": "content-length",
+									"value": "600"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Comment Feedbacks processed successfully\",\n    \"data\": [\n        {\n            \"feedback\": \"Great experience\",\n            \"sentiment\": 0.8,\n            \"sentiment_label\": \"positive\",\n            \"word_count\": 2,\n            \"adjectives\": [\n                \"Great\"\n            ]\n        },\n        {\n            \"feedback\": \"Nice Product\",\n            \"sentiment\": 0.6,\n            \"sentiment_label\": \"positive\",\n            \"word_count\": 2,\n            \"adjectives\": []\n        }\n    ],\n    \"analysis\": {\n        \"total_feedbacks\": 2,\n        \"average_sentiment\": 0.7,\n        \"average_word_count\": 2,\n        \"sentiment_distribution\": {\n            \"positive\": 2,\n            \"neutral\": 0,\n            \"negative\": 0\n        },\n        \"top_adjectives\": {\n            \"Great\": 1\n        },\n        \"chart_urls\": [\n            \"https://wjidwijftszidvtxiqvv.supabase.co/storage/v1/object/public/test/daily_trend_2d9dec6a-147a-4318-b824-f6827f7260f5.png?\"\n        ]\n    }\n}"
+						}
+					]
 				}
 			]
 		}

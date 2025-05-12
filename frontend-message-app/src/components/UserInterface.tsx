@@ -23,6 +23,7 @@ export default function UserInfo() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     publicEmail: '',
@@ -36,6 +37,12 @@ export default function UserInfo() {
       setError(null);
       try {
         const token = await getToken();
+        if (!token) {
+          setIsLoggedIn(false);
+          return;
+        }else{
+          setIsLoggedIn(true);
+        }
         const response = await fetch("http://localhost:8000/users/me", {
           method: "GET",
           headers: {
@@ -47,7 +54,7 @@ export default function UserInfo() {
         if (response.ok) {
           const data: UserData = await response.json();
           setUserData(data);
-        } else if (response.status === 400) {
+        } else if (response.status === 404) {
           setShowForm(true);
         } else {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -195,7 +202,7 @@ export default function UserInfo() {
             </form>
           </div>
         ) : (
-          <div className="loading">Checking user status...</div>
+          <div className="loading">{isLoggedIn ? "Checking user status..." : "Please sign in to continue"}</div>
         )}
       </div>
     </div>

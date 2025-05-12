@@ -78,6 +78,13 @@ manager = ConnectionManager()
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
     await manager.connect(websocket, user_id)
+    try:
+        while True:
+            # Wait for messages from the client
+            data = await websocket.receive_text()
+            # Process the message if needed
+    except WebSocketDisconnect:
+        manager.disconnect(user_id)
 
 
 @app.post("/create-user/", response_model=User)
